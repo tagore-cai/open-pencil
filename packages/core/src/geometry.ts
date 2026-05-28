@@ -257,11 +257,18 @@ function geometryCommandCoordCount(command: number): number | null {
   return null
 }
 
+export function getGeometryCommandsBlob(path: { commandsBlob: Uint8Array }): Uint8Array | null {
+  const blob = (path as { commandsBlob?: unknown }).commandsBlob
+  if (!(blob instanceof Uint8Array) || blob.byteLength === 0) return null
+  return blob
+}
+
 export function geometryBlobBounds(paths: Array<{ commandsBlob: Uint8Array }>): Rect | null {
   const bounds = createBoundsAccumulator()
 
   for (const path of paths) {
-    const blob = path.commandsBlob
+    const blob = getGeometryCommandsBlob(path)
+    if (!blob) continue
     const dv = new DataView(blob.buffer, blob.byteOffset, blob.byteLength)
     let offset = 0
     while (offset < blob.length) {
