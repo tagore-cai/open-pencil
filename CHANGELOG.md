@@ -13,7 +13,7 @@
 - Add `parse5`-backed headless HTML parsing for `@open-pencil/dom-css` DesignDOM documents.
 - Add CSSOM-backed headless style computation for basic `tag`, `.class`, `#id`, descendant, and child selectors with shorthand expansion.
 - Add an HTML/CSS card round-trip fixture covering DesignDOM style computation, SceneGraph import, and HTML serialization.
-- Add Tailwind-generated CSS ingestion coverage for `@open-pencil/dom-css` card import through CSSOM and SceneGraph conversion.
+- Add `compileTailwindCSS()` to delegate utility compilation to Tailwind v4 and cover generated CSS ingestion through CSSOM and SceneGraph conversion.
 
 ### Fixes
 
