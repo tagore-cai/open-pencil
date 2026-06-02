@@ -8,6 +8,7 @@
 - Add design JSX variable helpers so color props can use `designVar()` / `defineVars()` references and emit graph variable bindings.
 - Add structured design JSX paint helpers for solid fills, multiple fills, and gradients.
 - Add structured design JSX effect helpers for shadows and blur effects.
+- Add the `@open-pencil/dom-css` package skeleton for DOM/CSS projection and browser/headless CSS runtime adapters.
 
 ### Fixes
 
