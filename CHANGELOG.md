@@ -5,6 +5,7 @@
 ### Changed
 
 - Add JSX authoring support for components, component sets, and instances.
+- Add design JSX variable helpers so color props can use `designVar()` / `defineVars()` references and emit graph variable bindings.
 
 ### Fixes
 
