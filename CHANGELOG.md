@@ -11,6 +11,7 @@
 - Add the `@open-pencil/dom-css` package skeleton for DOM/CSS projection and browser/headless CSS runtime adapters.
 - Add initial `@open-pencil/dom-css` DesignDOM ⇄ SceneGraph conversion helpers for HTML/CSS-shaped card layouts.
 - Add `parse5`-backed headless HTML parsing for `@open-pencil/dom-css` DesignDOM documents.
+- Add CSSOM-backed headless style computation for basic `tag`, `.class`, and `#id` selectors.
 
 ### Fixes
 
