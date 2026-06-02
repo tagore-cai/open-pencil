@@ -7,6 +7,7 @@
 - Add JSX authoring support for components, component sets, and instances.
 - Add design JSX variable helpers so color props can use `designVar()` / `defineVars()` references and emit graph variable bindings.
 - Add structured design JSX paint helpers for solid fills, multiple fills, and gradients.
+- Add structured design JSX effect helpers for shadows and blur effects.
 
 ### Fixes
 
