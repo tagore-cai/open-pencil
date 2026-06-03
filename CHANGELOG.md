@@ -20,6 +20,7 @@
 - Expand DOM/CSS fixture coverage for inputs, badges, nav rows, dialogs, and Tailwind-generated utility styles.
 - Add package-local `@open-pencil/dom-css` tests so the package can be validated independently with `bun run test` from `packages/dom-css`.
 - Add standalone `@open-pencil/dom-css` typecheck, check, and built-package smoke scripts for external package maintenance.
+- Improve `@open-pencil/dom-css` SceneGraph → CSS export parity for logical padding, independent border sides, opacity, text typography, and shadows.
 
 ### Fixes
 
