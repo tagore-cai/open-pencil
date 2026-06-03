@@ -22,6 +22,7 @@
 - Add standalone `@open-pencil/dom-css` typecheck, check, and built-package smoke scripts for external package maintenance.
 - Improve `@open-pencil/dom-css` SceneGraph → CSS export parity for logical padding, independent border sides, opacity, text typography, and shadows.
 - Add `@open-pencil/dom-css` JSX runtime helpers for DOM-shaped authoring into DesignDOM, CSS runtime styling, SceneGraph conversion, and Tailwind-generated CSS flows.
+- Add browser-first JSX/Tailwind helpers for native `getComputedStyle()` conversion, expand CSS mapping for flex wrapping, self alignment, absolute positioning basics, and document the future `@open-pencil/kiwi` / `@open-pencil/fig` package split plan.
 
 ### Fixes
 
