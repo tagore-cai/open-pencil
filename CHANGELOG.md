@@ -17,6 +17,7 @@
 - Add browser-oracle DOM/CSS fixtures for Tailwind cards/buttons, CSS custom properties, `calc()`, and modern computed color output.
 - Add high-level `htmlToDesignDocument()`, `htmlToSceneGraph()`, `tailwindHTMLToDesignDocument()`, and `tailwindHTMLToSceneGraph()` helpers.
 - Improve `@open-pencil/dom-css` conversion for flex alignment, independent corner radii, per-side stroke weights, clipping, and size constraints.
+- Expand DOM/CSS fixture coverage for inputs, badges, nav rows, dialogs, and Tailwind-generated utility styles.
 
 ### Fixes
 
