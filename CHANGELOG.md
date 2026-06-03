@@ -21,6 +21,7 @@
 - Add package-local `@open-pencil/dom-css` tests so the package can be validated independently with `bun run test` from `packages/dom-css`.
 - Add standalone `@open-pencil/dom-css` typecheck, check, and built-package smoke scripts for external package maintenance.
 - Improve `@open-pencil/dom-css` SceneGraph → CSS export parity for logical padding, independent border sides, opacity, text typography, and shadows.
+- Add `@open-pencil/dom-css` JSX runtime helpers for DOM-shaped authoring into DesignDOM, CSS runtime styling, SceneGraph conversion, and Tailwind-generated CSS flows.
 
 ### Fixes
 
