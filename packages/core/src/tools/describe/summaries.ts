@@ -1,5 +1,6 @@
+import type { SceneNode } from '@open-pencil/scene-graph'
+
 import { colorToHex } from '#core/color'
-import type { SceneNode } from '#core/scene-graph'
 
 export function describeVisual(node: SceneNode): string {
   const parts: string[] = []
