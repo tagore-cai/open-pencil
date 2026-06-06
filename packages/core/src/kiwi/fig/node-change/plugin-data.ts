@@ -2,7 +2,7 @@ import type { NodeChange, PluginData, PluginRelaunchData } from '@open-pencil/ki
 
 import type { PluginDataEntry, PluginRelaunchDataEntry } from '#core/scene-graph'
 
-import { guidToString } from './guid'
+import { guidToString } from '@open-pencil/kiwi/fig/guid'
 
 export const OPEN_PENCIL_PLUGIN_ID = 'open-pencil'
 export const TEXT_DIRECTION_PLUGIN_KEY = 'textDirection'
