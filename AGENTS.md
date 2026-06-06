@@ -18,7 +18,7 @@ Bun workspace packages:
 
 - `packages/vue` — `@open-pencil/vue`: headless Vue 3 SDK (Reka UI-style) for building custom OpenPencil-powered editor shells and embedded editing surfaces. Renderless components and composables. The app is one consumer of the SDK.
 
-The root app (`src/`) is the Tauri/Vite desktop editor. App-specific editor, document, AI, collaboration, shell, tabs, demo, and automation code lives under `src/app/*`. The app consumes `@open-pencil/core` through targeted core subpath exports and `@open-pencil/vue` through the public Vue SDK entrypoint.
+The root app (`src/`) is the Tauri/Vite desktop editor. App-specific editor, document, AI, collaboration, shell, tabs, demo, and automation code lives under `src/app/*`. The app consumes scene graph primitives from `@open-pencil/scene-graph`, editor/rendering services through targeted `@open-pencil/core` subpath exports, and `@open-pencil/vue` through the public Vue SDK entrypoint.
 
 ### Core subpath exports
 
@@ -26,8 +26,8 @@ The root app (`src/`) is the Tauri/Vite desktop editor. App-specific editor, doc
 
 | Subpath | What | Heavy dep isolated |
 |---|---|---|
-| `@open-pencil/core` | everything (barrel) | all |
-| `@open-pencil/core/scene-graph` | SceneGraph, node types, hit-test, copy, snap, undo | — |
+| `@open-pencil/core` | editor/rendering engine barrel | all core subsystems |
+| `@open-pencil/scene-graph` | SceneGraph, node types, hit-test, copy, snap, undo | — |
 | `@open-pencil/core/color` | parseColor, colorToHex, color management, OkHCL | culori |
 | `@open-pencil/core/text` | fonts, text editor, style runs, direction | — |
 | `@open-pencil/core/vector` | vector network encode/decode, bezier math | — |
@@ -263,9 +263,9 @@ OpenPencil follows a Reka UI-inspired component namespace structure:
 - No `any` — use proper types, generics, declaration merging
 - No `!` non-null assertions — use guards, `?.`, `??`
 - No `Math.random()` — use `crypto.getRandomValues()` everywhere
-- No inline type definitions when a named type exists — use `Color` not `{ r: number; g: number; b: number; a: number }`, use `Vector` not `{ x: number; y: number }`, use `SceneNode` / `Effect` / `Fill` / `Stroke` from `@open-pencil/core/scene-graph` instead of re-spelling their shapes inline
+- No inline type definitions when a named type exists — use `Color` not `{ r: number; g: number; b: number; a: number }`, use `Vector` not `{ x: number; y: number }`, use `SceneNode` / `Effect` / `Fill` / `Stroke` from `@open-pencil/scene-graph` instead of re-spelling their shapes inline
 - Shared types (GUID, Color, Vector, Matrix, Rect) live in `packages/core/src/types.ts`
-- Domain types (SceneNode, Fill, Stroke, Effect, BlendMode, etc.) live in `packages/core/src/scene-graph/` and are exported from `@open-pencil/core/scene-graph`
+- Domain types (SceneNode, Fill, Stroke, Effect, BlendMode, etc.) live in `packages/scene-graph/src/` and are exported from `@open-pencil/scene-graph`
 - Window API extensions (showOpenFilePicker, queryLocalFonts) live in `src/global.d.ts` and `packages/core/src/global.d.ts`
 - Use `culori` for color conversions — don't reimplement parseColor/colorToRgba
 - Use `@vueuse/core` hooks — prefer higher-level composables (`useBreakpoints`, `useEventListener`, `onClickOutside`, etc.) over raw APIs (`useMediaQuery`, manual `addEventListener`)

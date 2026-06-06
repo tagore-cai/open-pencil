@@ -22,7 +22,7 @@ import { $ } from 'bun'
 import { SkiaRenderer } from '@open-pencil/core/canvas'
 import { renderNodesToImage, initCanvasKit } from '@open-pencil/core/io'
 import { computeAllLayouts } from '@open-pencil/core/layout'
-import { SceneGraph } from '@open-pencil/core/scene-graph'
+import { SceneGraph } from '@open-pencil/scene-graph'
 import { fontManager } from '@open-pencil/core/text'
 
 import { parseFigmaClipboard, importClipboardNodes } from '#core/clipboard'
