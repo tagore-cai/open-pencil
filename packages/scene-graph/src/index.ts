@@ -1,5 +1,6 @@
 export * from './images'
 export * from './snap'
+export * from './export-scale'
 export { UndoManager, type UndoEntry, type UndoManagerOptions } from './undo'
 
 import { createNanoEvents } from 'nanoevents'
