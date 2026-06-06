@@ -1,4 +1,4 @@
-import type { NodeChange, PluginData, PluginRelaunchData } from '#core/kiwi/fig/codec'
+import type { NodeChange, PluginData, PluginRelaunchData } from '@open-pencil/kiwi/fig/codec'
 import type { PluginDataEntry, PluginRelaunchDataEntry } from '#core/scene-graph'
 
 import { guidToString } from './guid'
