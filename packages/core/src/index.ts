@@ -369,8 +369,6 @@ export {
 } from './clipboard'
 export { probeGlyphOutlineCommands, type GlyphOutlineProbe } from './text/opentype'
 
-export { readPenFile, parsePenFile } from './io/formats/pen'
-
 export {
   readFigFile,
   parseFigFile,
