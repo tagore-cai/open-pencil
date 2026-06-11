@@ -1,6 +1,9 @@
 export * from './images'
 export * from './snap'
 export * from './export-scale'
+export * from './geometry'
+export { default as TransformMatrix } from './matrix'
+export type { Mat3 } from './matrix'
 export { UndoManager, type UndoEntry, type UndoManagerOptions } from './undo'
 
 import { omit } from 'es-toolkit/object'
@@ -137,7 +140,6 @@ export class SceneGraph {
     }
     return count
   }
-  // --- Variables ---
   addVariable(variable: Variable): void {
     Variables.addVariable(this, variable)
   }
@@ -423,7 +425,6 @@ export class SceneGraph {
     const oldParentId = node.parentId
     this.absPosCache.clear()
 
-    // Convert absolute position
     const absPos = this.getAbsolutePosition(nodeId)
     const newParentNode = this.nodes.get(newParentId)
     const newParentAbs =
@@ -431,16 +432,13 @@ export class SceneGraph {
         ? { x: 0, y: 0 }
         : this.getAbsolutePosition(newParentId)
 
-    // Remove from old parent
     if (oldParent) {
       oldParent.childIds = oldParent.childIds.filter((cid) => cid !== nodeId)
     }
 
-    // Add to new parent
     node.parentId = newParentId
     newParent.childIds.push(nodeId)
 
-    // Adjust position so node stays in same visual place
     node.x = absPos.x - newParentAbs.x
     node.y = absPos.y - newParentAbs.y
 
