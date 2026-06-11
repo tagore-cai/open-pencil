@@ -1,117 +1,52 @@
 # OpenPencil
 
-Open-source design editor. Opens `.fig` and `.pen` design files, includes built-in AI, and ships as a programmable toolkit with a headless Vue SDK for building custom editors.
+[![CI](https://github.com/open-pencil/open-pencil/actions/workflows/ci.yml/badge.svg)](https://github.com/open-pencil/open-pencil/actions/workflows/ci.yml)
+[![Release](https://img.shields.io/github/v/release/open-pencil/open-pencil)](https://github.com/open-pencil/open-pencil/releases/latest)
+[![npm](https://img.shields.io/npm/v/%40open-pencil%2Fcli?label=%40open-pencil%2Fcli)](https://www.npmjs.com/package/@open-pencil/cli)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+
+Open-source design editor built on one premise: **a design is a node tree, not a picture.** It opens Figma's `.fig` files natively, exposes every operation to scripts and agents, and turns design changes into diffs you can review. Local-first — a ~7 MB desktop app or a browser tab; no account, no server.
 
 > **Status:** Active development. Not ready for production use.
->
-> **Note:** There is another open-source project with the same name — [OpenPencil by ZSeven-W](https://github.com/ZSeven-W/openpencil), focused on AI-native design-to-code workflows. This project focuses on Figma-compatible visual design with real-time collaboration.
 
-**[Try it online →](https://app.openpencil.dev/demo)** · [Download](https://github.com/open-pencil/open-pencil/releases/latest) · [Documentation](https://openpencil.dev) · [llms.txt](https://openpencil.dev/llms.txt)
+**[Try it online →](https://app.openpencil.dev/demo)** · [Download](https://github.com/open-pencil/open-pencil/releases/latest) · [Documentation](https://openpencil.dev) · [Roadmap](https://openpencil.dev/development/roadmap)
 
 ![OpenPencil](packages/docs/public/screenshot.png)
 
-## Installation
+## Install
 
-**macOS (Homebrew):**
+| | |
+|---|---|
+| **Web** | [app.openpencil.dev](https://app.openpencil.dev) — nothing to install |
+| **Desktop** | `brew install open-pencil/tap/open-pencil` or [download](https://github.com/open-pencil/open-pencil/releases/latest) for macOS, Windows, Linux |
+| **CLI** | `npm install -g @open-pencil/cli` |
 
-```sh
-brew install openpencil
-```
+## Why
 
-Or download from the [releases page](https://github.com/open-pencil/open-pencil/releases/latest), or [use the web app](https://app.openpencil.dev) — no install needed.
+Design tools treat the canvas as the product and the file as an implementation detail — a proprietary binary only the vendor's software can fully read, behind APIs that fight automation. Figma's MCP server is read-only. [figma-use](https://github.com/dannote/figma-use) added full read/write automation via CDP — then [Figma 126 killed CDP](https://forum.figma.com/report-a-problem-6/remote-debugging-port-not-working-in-figma-desktop-126-1-2-50858). Your workflows break when they decide to ship a point release.
 
-## What it does
+OpenPencil inverts that. The document is a node tree you can open, query, transform, lint, and diff; the editor is one client of it. A designer moves things on the canvas; a script renames every color token; an AI agent builds a screen — all through the same small set of operations, and each change is data you can review like a code change. The editor, the engine, the file codec, the CLI, the MCP server, and the Vue SDK are all MIT; your files never leave your machine.
 
-- **Opens `.fig` and `.pen` files** — read and write native Figma files, open supported Pencil documents from the app or OS file browser, copy & paste nodes between apps
-- **AI builds designs** — describe what you want in chat, 90+ tools create and modify nodes. Connect OpenRouter, Anthropic, OpenAI, Google AI, Z.ai, MiniMax, or compatible endpoints
-- **Fully programmable** — headless CLI, XPath queries, Figma Plugin API via `eval`, MCP server for AI agents, and desktop agent integrations for Claude Code, Codex, and Gemini CLI
-- **Lint, convert, and extract tokens** — inspect documents, lint naming/layout/accessibility, convert between supported formats, analyze colors/typography/spacing/clusters, and extract design tokens
-- **Components and variants** — create reusable components, group variants into component sets, insert local assets as instances, and switch variants from the inspector
-- **Design-to-code export** — export selections as JSX/Tailwind, generate token outputs, and map designs into component-oriented code workflows
-- **Vue SDK for custom editors** — headless components and composables for embedding OpenPencil into other apps or building workflow-specific editing surfaces. [Read the SDK docs →](https://openpencil.dev/programmable/sdk/)
-- **Real-time collaboration** — P2P via WebRTC, no server, no account. Cursors, presence, follow mode
-- **Auto layout & CSS Grid** — flex and grid layout via Yoga WASM, with gap, padding, alignment, track sizing
-- **~7 MB desktop app** — Tauri v2 for macOS, Windows, Linux. Also runs in the browser as a PWA
+## The editor
 
-## CLI
+- **Opens `.fig` and `.pen` files** — reads and writes Figma's native format; copy & paste nodes between Figma and OpenPencil. [Compatibility matrix →](https://openpencil.dev/development/roadmap#figma-compatibility-matrix)
+- **AI in the editor** — press <kbd>⌘</kbd><kbd>J</kbd>, describe what you want; 100+ tools create and modify real nodes in your file. Bring your own API key (Anthropic, OpenAI, Google AI, OpenRouter, and compatible endpoints), or run Claude Code, Codex, or Gemini CLI directly in the chat panel
+- **Components, variants, variables** — reusable components, variant sets, color/number/string/boolean variables with modes
+- **Auto layout & CSS Grid** — flex and grid via Yoga, with gap, padding, alignment, track sizing
+- **Real-time collaboration** — share a link, edit together: cursors, presence, follow mode. P2P over WebRTC; no server, no account
+- **Local-first** — ~7 MB Tauri app for macOS, Windows, Linux, or a browser PWA. Works offline
 
-```sh
-npm install -g @open-pencil/cli
-# or: bun add -g @open-pencil/cli
-```
+## The toolkit
 
-### Inspect design files
-
-Browse node trees, search by name or type, dig into properties — all without opening the editor:
+The same document operations, headless. Inspect, query, lint, analyze, and export `.fig`/`.pen` files from the terminal — or drive the running editor over RPC:
 
 ```sh
-openpencil tree design.fig
-openpencil find design.pen --type TEXT
-openpencil node design.fig --id 1:23
-openpencil info design.fig
-```
-
-```
-[0] [page] "Getting started" (0:46566)
-  [0] [section] "" (0:46567)
-    [0] [frame] "Body" (0:46568)
-      [0] [frame] "Introduction" (0:46569)
-        [0] [frame] "Introduction Card" (0:46570)
-          [0] [frame] "Guidance" (0:46571)
-```
-
-### Query with XPath
-
-Use XPath selectors to find nodes by type, attributes, and structure:
-
-```sh
-openpencil query design.fig "//FRAME"                              # All frames
-openpencil query design.fig "//FRAME[@width < 300]"                # Frames under 300px
-openpencil query design.fig "//TEXT[contains(@name, 'Button')]"     # Text with 'Button' in name
-openpencil query design.fig "//*[@cornerRadius > 0]"               # Rounded corners
-openpencil query design.fig "//SECTION//TEXT"                       # Text inside sections
-```
-
-### Export
-
-Render to PNG, JPG, WEBP, SVG, `.fig`, or JSX — or export selections/pages as `.fig` and convert whole documents between supported formats:
-
-```sh
-openpencil export design.fig                           # PNG
-openpencil export design.fig -f jpg -s 2 -q 90        # JPG at 2x, quality 90
-openpencil export design.fig -f fig --page "Page 1"   # Export a page as .fig
-openpencil export design.fig -f jsx --style tailwind   # Tailwind JSX
-openpencil convert design.pen output.fig               # Convert between document formats
-```
-
-```html
-<div className="flex flex-col gap-4 p-6 bg-white rounded-xl">
-  <p className="text-2xl font-bold text-[#1D1B20]">Card Title</p>
-  <p className="text-sm text-[#49454F]">Description text</p>
-</div>
-```
-
-### Lint design files
-
-Catch naming, layout, structure, and accessibility issues from the terminal:
-
-```sh
-openpencil lint design.fig
-openpencil lint design.pen --preset strict
-openpencil lint design.fig --rule color-contrast
-openpencil lint design.fig --list-rules
-```
-
-### Analyze and extract design tokens
-
-Audit an entire design system from the terminal — find inconsistencies, extract the real palette, and spot components waiting to be extracted:
-
-```sh
-openpencil analyze colors design.fig
-openpencil analyze typography design.fig
-openpencil analyze spacing design.fig
-openpencil analyze clusters design.fig
-openpencil variables design.fig
+openpencil tree design.fig                                # node tree
+openpencil query design.fig "//TEXT[contains(@name,'Button')]"   # XPath
+openpencil lint design.fig --preset strict                # 18 rules: naming, layout, contrast
+openpencil analyze colors design.fig                      # the real palette, by usage
+openpencil export design.fig -f jsx --style tailwind      # design → Tailwind JSX
+openpencil eval design.fig -c "figma.currentPage.selection.forEach(n => n.opacity = 0.5)" -w
 ```
 
 ```
@@ -119,121 +54,33 @@ openpencil variables design.fig
 #49454f  ██████████████████████████████ 9814×
 #ffffff  ██████████████████████████████ 8620×
 #6750a4  ██████████████████████████████ 3967×
-
-3771× frame "container" (100% match)
-     size: 40×40, structure: Frame > [Frame]
-
-2982× instance "Checkboxes" (100% match)
-     size: 48×48, structure: Instance > [Frame]
 ```
 
-### Script with Figma Plugin API
+`eval` is the full Figma Plugin API against your file. Every command supports `--json`. When the desktop app is running, omit the file argument and the CLI operates on the live canvas — useful for CI and agents.
 
-`eval` gives you the full Figma Plugin API. Modify the file, write it back:
+[CLI documentation →](https://openpencil.dev/programmable/cli/)
 
-```sh
-openpencil eval design.fig -c "figma.currentPage.children.length"
-openpencil eval design.fig -c "figma.currentPage.selection.forEach(n => n.opacity = 0.5)" -w
-```
+## For AI agents
 
-### Control the running app
+- **MCP server** — `npm install -g @open-pencil/mcp`, then connect Claude Code, Cursor, Windsurf, or any MCP client. 100+ tools over stdio or HTTP. [Setup →](https://openpencil.dev/programmable/mcp-server)
+- **Agent skill** — `npx skills add open-pencil/skills@open-pencil` teaches coding agents the full inspect → edit → render → compare loop. [Skills repo →](https://github.com/open-pencil/skills)
+- **llms.txt** — the docs site publishes [llms.txt](https://openpencil.dev/llms.txt), [llms-full.txt](https://openpencil.dev/llms-full.txt), and per-page Markdown
 
-When the desktop app is running, omit the file argument — the CLI connects via RPC and operates on the live canvas. Useful for automation scripts, CI pipelines, or AI agents that need to interact with the editor:
+## For developers
 
-```sh
-openpencil tree                               # Inspect the live document
-openpencil export -f png                      # Screenshot the current canvas
-openpencil eval -c "figma.currentPage.name"   # Query the editor
-```
+- **Vue SDK** — headless components and composables for embedding OpenPencil or building custom editors on the same core. [SDK docs →](https://openpencil.dev/programmable/sdk/)
+- **Packages** — [`@open-pencil/core`](https://www.npmjs.com/package/@open-pencil/core) (engine), [`@open-pencil/cli`](https://www.npmjs.com/package/@open-pencil/cli), [`@open-pencil/mcp`](https://www.npmjs.com/package/@open-pencil/mcp), [`@open-pencil/vue`](https://www.npmjs.com/package/@open-pencil/vue) — all from this repository
 
-All commands support `--json` for machine-readable output.
+## Documentation
 
-## AI & MCP
-
-### Built-in chat
-
-Press <kbd>⌘</kbd><kbd>J</kbd> to open the AI assistant. It has 100+ tools that can create shapes, set fills and strokes, manage auto-layout, work with components and variables, run boolean operations, analyze design tokens, and export assets. Bring your own API key for OpenRouter, Anthropic, OpenAI, Google AI, Z.ai, MiniMax, or compatible endpoints. No backend, no account.
-
-### Coding agents (desktop)
-
-Use Claude Code, Codex, or Gemini CLI directly in the chat panel. The agent connects to the editor's MCP server and uses all 100+ design tools. Requires the desktop app and the agent CLI installed locally.
-
-**Setup (Claude Code):**
-
-1. Install the ACP adapter: `npm install -g @agentclientprotocol/claude-agent-acp`
-2. Add MCP permission to `~/.claude/settings.json`:
-   ```json
-   {
-     "permissions": {
-       "allow": ["mcp__open-pencil__*"]
-     }
-   }
-   ```
-3. Open the desktop app → <kbd>Ctrl</kbd><kbd>J</kbd> → select **Claude Code** from the provider dropdown
-
-### MCP server
-
-Connect Claude Code, Cursor, Windsurf, or any MCP client to inspect, modify, and export design documents headlessly. 100+ tools. [Full docs →](https://openpencil.dev/reference/mcp-tools)
-
-**Stdio** (Claude Code, Cursor, Windsurf):
-
-```sh
-npm install -g @open-pencil/mcp
-claude mcp add --scope user open-pencil -- openpencil-mcp
-```
-
-For other MCP clients:
-
-```json
-{
-  "mcpServers": {
-    "open-pencil": {
-      "command": "openpencil-mcp"
-    }
-  }
-}
-```
-
-**HTTP** (scripts, CI):
-
-```sh
-openpencil-mcp-http   # http://localhost:3100/mcp
-```
-
-**File access:** Set `OPENPENCIL_MCP_ROOT` to scope file operations (`open_file`, `new_document`, export `path` param) to a directory. Defaults to the current working directory.
-
-### AI agent skill
-
-Teach your AI coding agent to use OpenPencil — inspect designs, export assets, analyze tokens, modify .fig files:
-
-```sh
-npx skills add open-pencil/skills@open-pencil
-```
-
-Works with Claude Code, Cursor, Windsurf, Codex, and any agent that supports [skills](https://skills.sh).
-
-For documentation-aware agents, the docs site publishes [llms.txt](https://openpencil.dev/llms.txt), [llms-full.txt](https://openpencil.dev/llms-full.txt), and per-page Markdown files generated from the VitePress docs.
-
-## Collaboration
-
-Share a link to co-edit in real time. No server, no account — peers connect directly via WebRTC.
-
-1. Click the share button in the top-right panel
-2. Share the generated link (`app.openpencil.dev/share/<room-id>`)
-3. Collaborators see your cursor, selection, and edits in real time
-4. Click a peer's avatar to follow their viewport
-
-## Why
-
-Figma is a closed platform that actively fights programmatic access. Their MCP server is read-only. [figma-use](https://github.com/dannote/figma-use) added full read/write automation via CDP — then [Figma 126 killed CDP](https://forum.figma.com/report-a-problem-6/remote-debugging-port-not-working-in-figma-desktop-126-1-2-50858). Your design files are in a proprietary binary format that only their software can fully read. Your workflows break when they decide to ship a point release.
-
-OpenPencil is the alternative: open source (MIT), reads .fig files natively, every operation is scriptable, and your data never leaves your machine.
-
-See the [roadmap](https://openpencil.dev/development/roadmap) for product direction and current Figma compatibility gaps.
+| | |
+|---|---|
+| [User guide](https://openpencil.dev/user-guide/) | The editor: canvas, shapes, text, components, export |
+| [Programmable](https://openpencil.dev/programmable/) | CLI, MCP, SDK, AI chat, JSX renderer |
+| [Reference](https://openpencil.dev/reference/) | CLI commands, node types, scene graph, file format |
+| [Roadmap](https://openpencil.dev/development/roadmap) | Direction + the Figma compatibility matrix |
 
 ## Contributing
-
-### Setup
 
 ```sh
 bun install
@@ -241,48 +88,29 @@ bun run dev        # Dev server at localhost:1420
 bun run tauri dev  # Desktop app (requires Rust)
 ```
 
-### Quality gates
-
-| Command | Description |
-|---------|-------------|
-| `bun run check` | Lint + typecheck |
-| `bun run test` | E2E visual regression |
-| `bun run test:unit` | Unit tests |
-| `bun run format` | Code formatting |
-
-### Project structure
+Quality gates: `bun run check` (lint + typecheck), `bun run test` (E2E visual regression), `bun run test:unit`, `bun run format`. See [CONTRIBUTING.md](CONTRIBUTING.md) for the workflow.
 
 ```
 packages/
-  core/           @open-pencil/core — engine (scene graph, renderer, layout, file formats, tools)
+  core/           @open-pencil/core — scene graph, renderer, layout, file formats, tools
   vue/            @open-pencil/vue — headless Vue SDK
   cli/            @open-pencil/cli — headless CLI
   mcp/            @open-pencil/mcp — MCP server (stdio + HTTP)
   docs/           Documentation site (openpencil.dev)
 src/              Vue app (components, composables, stores)
 desktop/          Tauri v2 (Rust + config)
-tests/            E2E (188 tests) + unit (764 tests)
+tests/            E2E + unit
 ```
 
-### Tech stack
+Built on Skia (CanvasKit WASM), Yoga ([fork with CSS Grid](https://github.com/open-pencil/yoga/tree/grid)), Vue 3, Tauri v2, Kiwi + Zstd for the file format, Trystero (WebRTC) + Yjs for collaboration.
 
-| Layer | Tech |
-|-------|------|
-| Rendering | Skia (CanvasKit WASM) |
-| Layout | Yoga WASM (flex + grid via [fork](https://github.com/open-pencil/yoga/tree/grid)) |
-| UI | Vue 3, Reka UI, Tailwind CSS 4 |
-| File format | Kiwi binary + Zstd + ZIP |
-| Collaboration | Trystero (WebRTC P2P) + Yjs (CRDT) |
-| Desktop | Tauri v2 |
-| AI/MCP | Multi-provider (Anthropic, OpenAI, Google AI, OpenRouter), MCP SDK, Hono |
+## Part of a larger stack
 
-### Desktop builds
+OpenPencil is the design layer of an open stack built so that software written by AI (and by people) can be checked, not just generated — every change carrying enough structure to verify. The argument and the map: [Building Blocks for the Future Web](https://github.com/elixir-vibe/building-blocks).
 
-Requires [Rust](https://rustup.rs/) and platform-specific prerequisites ([Tauri v2 guide](https://v2.tauri.app/start/prerequisites/)).
+## Naming
 
-```sh
-bun run tauri build
-```
+There is another open-source project with the same name — [OpenPencil by ZSeven-W](https://github.com/ZSeven-W/openpencil), focused on AI-native design-to-code workflows. This project focuses on Figma-compatible visual design with real-time collaboration.
 
 ## Acknowledgments
 
